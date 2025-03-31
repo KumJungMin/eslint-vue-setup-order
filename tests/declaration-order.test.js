@@ -1,6 +1,7 @@
 import { RuleTester } from "eslint";
 import rule from "../lib/rules/declaration-order.js";
 import config from "./config.js";
+import {ERROR_MESSAGE} from "../lib/constants.js";
 
 const ruleTester = new RuleTester(config);
 
