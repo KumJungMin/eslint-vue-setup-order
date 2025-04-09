@@ -1,6 +1,7 @@
 import { RuleTester } from "eslint";
 import rule from "../lib/rules/declaration-order.js";
 import config from "./config.js";
+import {ERROR_MESSAGE} from "../lib/constants.js";
 
 const ruleTester = new RuleTester(config);
 
@@ -166,7 +167,7 @@ ruleTester.run("declaration-order", rule, {
       errors: [
         {
           message:
-            "Vue 3 <script setup> 내 선언 순서가 올바르지 않습니다. 자동 수정(fix)을 적용합니다.",
+           ERROR_MESSAGE,
         },
       ],
     },
@@ -181,7 +182,7 @@ ruleTester.run("declaration-order", rule, {
       errors: [
         {
           message:
-            "Vue 3 <script setup> 내 선언 순서가 올바르지 않습니다. 자동 수정(fix)을 적용합니다.",
+           ERROR_MESSAGE,
         },
       ],
     },
@@ -200,7 +201,7 @@ ruleTester.run("declaration-order", rule, {
       errors: [
         {
           message:
-            "Vue 3 <script setup> 내 선언 순서가 올바르지 않습니다. 자동 수정(fix)을 적용합니다.",
+           ERROR_MESSAGE,
         },
       ],
     },
