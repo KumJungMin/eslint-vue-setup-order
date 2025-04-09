@@ -1,6 +1,6 @@
 {
   "name": "eslint-vue-setup-rules",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "sort of declaration of script setup in Vue 3",
   "main": "lib/index.js",
   "exports": {
