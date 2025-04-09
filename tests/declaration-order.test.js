@@ -41,6 +41,20 @@ const msg = ref("");
 </script>
 `;
 
+const ignoreNormalScript = `
+<script>
+const blah = () => {}
+const doNotReorderMe = true;
+</script>
+<script setup>
+const emits = defineEmits();
+
+const hello = "Hello World!";
+
+const changeMsg = () => {};
+</script>
+`;
+
 const fixedCode = `
 <script setup>
 const emits = defineEmits();
@@ -121,6 +135,9 @@ ruleTester.run("declaration-order", rule, {
   valid: [
     {
       code: validCode,
+    },
+    {
+      code: ignoreNormalScript,
     },
     {
       code: customValidCode,
