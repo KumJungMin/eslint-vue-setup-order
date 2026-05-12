@@ -1,79 +1,4 @@
-import { RuleTester } from "eslint";
-import rule from "../lib/rules/declaration-order.js";
-import config from "./config.js";
-import {ERROR_MESSAGE} from "../lib/constants.js";
-
-const ruleTester = new RuleTester(config);
-
-const validCode = `
-<script setup>
-const emits = defineEmits();
-
-const hello = "Hello World!";
-
-const count = ref(0);
-const msg = ref("");
-
-onBeforeMount(() => {
-  console.log("onBeforeMount");
-});
-
-const changeMsg = () => {};
-function handleClick() {
-  emits("click");
-}
-</script>
-`;
-
-const invalidCode = `
-<script setup>
-const hello = "Hello World!";
-const changeMsg = () => {};
-const emits = defineEmits();
-onBeforeMount(() => {
-  console.log("onBeforeMount");
-});
-function handleClick() {
-  emits("click");
-}
-const count = ref(0);
-const msg = ref("");
-</script>
-`;
-
-const ignoreNormalScript = `
-<script>
-const blah = () => {}
-const doNotReorderMe = true;
-</script>
-<script setup>
-const emits = defineEmits();
-
-const hello = "Hello World!";
-
-const changeMsg = () => {};
-</script>
-`;
-
-const fixedCode = `
-<script setup>
-const emits = defineEmits();
-
-const hello = "Hello World!";
-
-const count = ref(0);
-const msg = ref("");
-
-onBeforeMount(() => {
-  console.log("onBeforeMount");
-});
-
-const changeMsg = () => {};
-function handleClick() {
-  emits("click");
-}
-</script>
-`;
+import { ruleTester, rule, ERROR_MESSAGE } from "./shared.js";
 
 const customValidCode = `
 <script setup>
@@ -208,63 +133,8 @@ function handleClick() {
 </script>
 `;
 
-const functionBodySpacingValidCode = `
-<script setup>
-const emits = defineEmits();
-
-function handleClick() {
-  if (true) {
-
-    emits("click");
-  }
-}
-</script>
-`;
-
-const functionBodySpacingInvalidCode = `
-<script setup>
-function handleClick() {
-  if (true) {
-
-    emits("click");
-  }
-}
-
-const emits = defineEmits();
-</script>
-`;
-
-const functionBodySpacingFixedCode = `
-<script setup>
-const emits = defineEmits();
-
-function handleClick() {
-  if (true) {
-
-    emits("click");
-  }
-}
-</script>
-`;
-
-const multilineComposableSpacingValidCode = `
-<script setup>
-const state = useFeature({
-  top: true,
-
-  bottom: false,
-});
-</script>
-`;
-
-ruleTester.run("declaration-order", rule, {
+ruleTester.run("declaration-order: options", rule, {
   valid: [
-    {
-      code: validCode,
-    },
-    {
-      code: ignoreNormalScript,
-    },
     {
       code: customValidCode,
       options: [
@@ -301,24 +171,8 @@ ruleTester.run("declaration-order", rule, {
         },
       ],
     },
-    {
-      code: functionBodySpacingValidCode,
-    },
-    {
-      code: multilineComposableSpacingValidCode,
-    },
   ],
   invalid: [
-    {
-      code: invalidCode,
-      output: fixedCode,
-      errors: [
-        {
-          message:
-           ERROR_MESSAGE,
-        },
-      ],
-    },
     {
       code: customInvalidCode,
       output: customFixedCode,
@@ -329,8 +183,7 @@ ruleTester.run("declaration-order", rule, {
       ],
       errors: [
         {
-          message:
-           ERROR_MESSAGE,
+          message: ERROR_MESSAGE,
         },
       ],
     },
@@ -348,8 +201,7 @@ ruleTester.run("declaration-order", rule, {
       ],
       errors: [
         {
-          message:
-           ERROR_MESSAGE,
+          message: ERROR_MESSAGE,
         },
       ],
     },
@@ -375,15 +227,6 @@ ruleTester.run("declaration-order", rule, {
           spaceBetweenItems: true,
         },
       ],
-      errors: [
-        {
-          message: ERROR_MESSAGE,
-        },
-      ],
-    },
-    {
-      code: functionBodySpacingInvalidCode,
-      output: functionBodySpacingFixedCode,
       errors: [
         {
           message: ERROR_MESSAGE,
