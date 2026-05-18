@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha tests/all.test.js"
   },
   "keywords": [
     "eslint",
