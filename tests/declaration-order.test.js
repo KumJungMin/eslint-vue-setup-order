@@ -267,6 +267,43 @@ const hello = "Hello World!";
 </script>
 `;
 
+const enumValidCode = `
+<script setup>
+enum Direction {
+  Up,
+  Down,
+}
+
+const emits = defineEmits();
+
+const hello = "Hello World!";
+</script>
+`;
+
+const enumInvalidCode = `
+<script setup>
+const hello = "Hello World!";
+enum Direction {
+  Up,
+  Down,
+}
+const emits = defineEmits();
+</script>
+`;
+
+const enumFixedCode = `
+<script setup>
+enum Direction {
+  Up,
+  Down,
+}
+
+const emits = defineEmits();
+
+const hello = "Hello World!";
+</script>
+`;
+
 const spaceBetweenItemsValidCode = `
 <script setup>
 const emits = defineEmits();
@@ -421,6 +458,9 @@ ruleTester.run("declaration-order", rule, {
     {
       code: multilineComposableSpacingValidCode,
     },
+    {
+      code: enumValidCode,
+    },
   ],
   invalid: [
     {
@@ -534,6 +574,15 @@ ruleTester.run("declaration-order", rule, {
     {
       code: functionBodySpacingInvalidCode,
       output: functionBodySpacingFixedCode,
+      errors: [
+        {
+          message: ERROR_MESSAGE,
+        },
+      ],
+    },
+    {
+      code: enumInvalidCode,
+      output: enumFixedCode,
       errors: [
         {
           message: ERROR_MESSAGE,
