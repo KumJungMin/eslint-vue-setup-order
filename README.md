@@ -344,6 +344,57 @@ In this case:
 
 <br/>
 
+## 🛠 sectionConfigurations Option
+You can define custom section matching rules with the `sectionConfigurations` option.
+Each configuration is tested in the order it appears, before the built-in section detection runs.
+
+### 📌 How It Works
+Each configuration requires:
+- `sectionName`: the section assigned when the regex matches.
+- `regex`: a string pattern tested against the full declaration text.
+- `flags`: optional regular expression flags.
+
+The order of `sectionConfigurations` controls only matching precedence.
+It does **not** override `sectionOrder`.
+If you want a custom section to appear in a specific position, add that section name to `sectionOrder`.
+If the section is not present in `sectionOrder`, it is placed after configured sections.
+
+### 📌 Configuration Example
+```js
+// eslint.config.js
+export default [
+  {
+    files: ["**/*.vue"],
+    rules: {
+      "vue3-script-setup/declaration-order": [
+        "error",
+        {
+          sectionConfigurations: [
+            {
+              sectionName: "eventHandlers",
+              regex: "^function on",
+            },
+            {
+              sectionName: "functions",
+              regex: "^function ",
+            },
+          ],
+          sectionOrder: ["functions", "eventHandlers"],
+        },
+      ],
+    },
+  },
+];
+```
+
+### 📌 Result
+In this case:
+- `function onClick() {}` is treated as `eventHandlers`.
+- Other function declarations are treated as `functions`.
+- `functions` still appear before `eventHandlers` because `sectionOrder` controls output order.
+
+<br/>
+
 ## 🛠 spaceBetweenItems Option
 By default, declarations within the same section are placed consecutively with no blank line between them. <br/>
 You can configure the `spaceBetweenItems` option to control blank lines between declarations inside the same section.
