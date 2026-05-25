@@ -156,6 +156,45 @@ function handleClick() {
 </script>
 `;
 
+const spaceBetweenItemsNeverValidCode = `
+<script setup>
+const count = ref(0);
+const msg = ref("");
+</script>
+`;
+
+const preserveNewlinesBetweenItemsValidCode = `
+<script setup>
+function first() {
+  return 1;
+}
+
+
+function second() {
+  return 2;
+}
+</script>
+`;
+
+const preserveNewlinesBetweenItemsInvalidCode = `
+<script setup>
+const msg = ref("");
+
+const count = ref(0);
+const emits = defineEmits();
+</script>
+`;
+
+const preserveNewlinesBetweenItemsFixedCode = `
+<script setup>
+const emits = defineEmits();
+
+const msg = ref("");
+
+const count = ref(0);
+</script>
+`;
+
 ruleTester.run("declaration-order: options", rule, {
   valid: [
     {
@@ -199,6 +238,30 @@ ruleTester.run("declaration-order: options", rule, {
       options: [
         {
           sectionOrder: ["provides", "injects"],
+        },
+      ],
+    },
+    {
+      code: spaceBetweenItemsValidCode,
+      options: [
+        {
+          spaceBetweenItems: "always",
+        },
+      ],
+    },
+    {
+      code: spaceBetweenItemsNeverValidCode,
+      options: [
+        {
+          spaceBetweenItems: "never",
+        },
+      ],
+    },
+    {
+      code: preserveNewlinesBetweenItemsValidCode,
+      options: [
+        {
+          spaceBetweenItems: "preserve",
         },
       ],
     },
@@ -270,6 +333,34 @@ ruleTester.run("declaration-order: options", rule, {
       options: [
         {
           spaceBetweenItems: true,
+        },
+      ],
+      errors: [
+        {
+          message: ERROR_MESSAGE,
+        },
+      ],
+    },
+    {
+      code: spaceBetweenItemsInvalidCode,
+      output: spaceBetweenItemsFixedCode,
+      options: [
+        {
+          spaceBetweenItems: "always",
+        },
+      ],
+      errors: [
+        {
+          message: ERROR_MESSAGE,
+        },
+      ],
+    },
+    {
+      code: preserveNewlinesBetweenItemsInvalidCode,
+      output: preserveNewlinesBetweenItemsFixedCode,
+      options: [
+        {
+          spaceBetweenItems: "preserve",
         },
       ],
       errors: [

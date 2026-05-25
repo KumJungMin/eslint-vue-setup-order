@@ -346,10 +346,17 @@ In this case:
 
 ## 🛠 spaceBetweenItems Option
 By default, declarations within the same section are placed consecutively with no blank line between them. <br/>
-You can enable the `spaceBetweenItems` option to insert a blank line between every declaration inside a section, improving readability.
+You can configure the `spaceBetweenItems` option to control blank lines between declarations inside the same section.
 
 ### 📌 How It Works
-When `spaceBetweenItems` is set to `true`, each individual declaration within a section is separated by a blank line.
+`spaceBetweenItems` supports both the original boolean values and string values:
+
+| Value | Behavior |
+| --- | --- |
+| `false` or `"never"` | Places declarations within the same section consecutively with no blank line. This is the default. |
+| `true` or `"always"` | Inserts a blank line between every declaration within the same section. |
+| `"preserve"` | Preserves existing blank lines between adjacent declarations within the same section when possible. |
+
 Blank lines between different sections are always present regardless of this option.
 
 ### 📌 Configuration Example
@@ -377,7 +384,7 @@ export default [
       "vue3-script-setup/declaration-order": [
         "error",
         {
-          spaceBetweenItems: true, // <= like this
+          spaceBetweenItems: "preserve", // or true / "always"
         },
       ],
     },
@@ -396,6 +403,14 @@ const msg = ref("");
 With `spaceBetweenItems: true`:
 ```js
 const count = ref(0);
+
+const msg = ref("");
+```
+
+With `spaceBetweenItems: "preserve"`:
+```js
+const count = ref(0);
+
 
 const msg = ref("");
 ```
