@@ -84,6 +84,29 @@ const store = storeToRefs();
 </script>
 `;
 
+const injectComposableAliasInvalidCode = `
+<script setup>
+const service = inject("service");
+const count = ref(0);
+</script>
+`;
+
+const injectComposableAliasFixedCode = `
+<script setup>
+const count = ref(0);
+
+const service = inject("service");
+</script>
+`;
+
+const customDependencySectionsValidCode = `
+<script setup>
+provide("service", createService());
+
+const service = inject("service");
+</script>
+`;
+
 const spaceBetweenItemsValidCode = `
 <script setup>
 const emits = defineEmits();
@@ -211,6 +234,14 @@ ruleTester.run("declaration-order: options", rule, {
       ],
     },
     {
+      code: customDependencySectionsValidCode,
+      options: [
+        {
+          sectionOrder: ["provides", "injects"],
+        },
+      ],
+    },
+    {
       code: spaceBetweenItemsValidCode,
       options: [
         {
@@ -274,6 +305,20 @@ ruleTester.run("declaration-order: options", rule, {
       options: [
         {
           composableAliases: ["storeToRefs"],
+        },
+      ],
+      errors: [
+        {
+          message: ERROR_MESSAGE,
+        },
+      ],
+    },
+    {
+      code: injectComposableAliasInvalidCode,
+      output: injectComposableAliasFixedCode,
+      options: [
+        {
+          composableAliases: ["inject"],
         },
       ],
       errors: [
