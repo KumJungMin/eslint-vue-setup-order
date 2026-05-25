@@ -70,6 +70,24 @@ const changeMsg = () => {};
 </script>
 `;
 
+const dependencyInjectionInvalidCode = `
+<script setup>
+provide("count", count);
+const count = ref(0);
+const service = inject("service");
+</script>
+`;
+
+const dependencyInjectionFixedCode = `
+<script setup>
+const service = inject("service");
+
+const count = ref(0);
+
+provide("count", count);
+</script>
+`;
+
 ruleTester.run("declaration-order: core", rule, {
   valid: [
     {
@@ -83,6 +101,15 @@ ruleTester.run("declaration-order: core", rule, {
     {
       code: invalidCode,
       output: fixedCode,
+      errors: [
+        {
+          message: ERROR_MESSAGE,
+        },
+      ],
+    },
+    {
+      code: dependencyInjectionInvalidCode,
+      output: dependencyInjectionFixedCode,
       errors: [
         {
           message: ERROR_MESSAGE,

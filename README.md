@@ -17,15 +17,19 @@ The declarations in `<script setup>` are sorted in the following fixed order:
 "defineOptions",
 "class",
 "plainVars",
+"injects",
 "reactiveVars",
 "composables",
 "computed",
 "watchers",
+"provides",
 "lifecycle",
 "unknowns",
 "functions",
 "defineExpose"
 ```
+
+`inject(...)` calls are classified as `injects`, and `provide(...)` calls are classified as `provides`.
 
 <br/>
 
@@ -82,10 +86,12 @@ By default, the rule follows this order:
 "defineOptions",
 "class",
 "plainVars",
+"injects",
 "reactiveVars",
 "composables",
 "computed",
 "watchers",
+"provides",
 "lifecycle",
 "unknowns",
 "functions",
@@ -154,7 +160,7 @@ For example, this incorrect configuration:
 ```
 will result in the following error:
 ```
-Error: Invalid "sectionOrder" option: "invalidSection" is not a recognized section. Valid sections: defineProps, defineEmits, defineOthers, plainVars, reactiveVars, composables, computed, watchers, lifecycle, functions, unknowns.
+Error: Invalid "sectionOrder" option: "invalidSection" is not a recognized section. Valid sections: type, defineProps, defineEmits, defineSlots, defineModel, defineOptions, class, plainVars, injects, reactiveVars, composables, computed, watchers, provides, lifecycle, unknowns, functions, defineExpose.
 This ensures that only valid sections are allowed, preventing misconfiguration.
 ```
 With this customization, you can fine-tune the declaration order to suit your project’s coding style while still enforcing consistency. 🚀
